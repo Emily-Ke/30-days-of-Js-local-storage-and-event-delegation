@@ -1,0 +1,130 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: url('https://source.unsplash.com/N_Y88TWmGwA/');
+  background-repeat: no-repeat;
+  background-size: cover;
+  font-family: 'Poppins', sans-serif;
+  color: #222;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logo {
+  width: 100px;
+  height: 100px;
+  background: palegreen;
+  border-radius: 50%;
+  opacity: 95%;
+}
+
+.tapas-list {
+  background: white;
+  width: 250px;
+  margin: 2rem 1rem 1rem;
+  padding: 1rem;
+  box-shadow: 0 0 1px 8px rgba(0, 0, 0, 0.25);
+}
+
+.tapas-list > h1 {
+  text-align: center;
+  font-size: 1.5rem;
+  padding: 0.5rem 0;
+}
+
+.tapas-list > ul {
+  list-style-type: none;
+}
+
+.tapas-list li {
+  padding: 0.5rem 0.25rem;
+  border-bottom: 1px solid #ddd;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+}
+
+.tapas-list label {
+  position: relative;
+  cursor: pointer;
+  margin-left: 8px;
+}
+
+/* pseudo element for custom styled checkbox */
+/* outer box */
+.tapas-list label::before {
+  content: '';
+  display: inline-block;
+  position: absolute;
+  left: -24px;
+  height: 16px;
+  width: 16px;
+  border: 1px solid #ddd;
+  background-color: #eee;
+}
+
+/* checkmark */
+.tapas-list label::after {
+  display: inline-block;
+  position: absolute;
+  left: -24px;
+  top: -3px;
+}
+
+/* hide the checkmark by default*/
+.tapas-list input[type='checkbox'] + label::after {
+  content: none;
+}
+/* unhide the checkmark on the checked state*/
+.tapas-list input[type='checkbox']:checked + label::after {
+  content: '\01F32E'; /*🌮*/
+}
+
+.tapas-list input[type='checkbox']:checked + label::before {
+  border-color: transparent;
+  background: transparent;
+}
+
+/* adding focus styles on the outer-box of the fake checkbox*/
+.tapas-list input[type='checkbox']:focus + label::before {
+  outline: rgb(59, 153, 252) auto 5px;
+}
+
+.tapas-list input[type='checkbox'] {
+  opacity: 0;
+}
+
+.add-item {
+  padding: 1.25rem 0 0.25rem 0;
+  display: flex;
+}
+
+.add-item > * {
+  border-radius: 3px;
+}
+
+.add-item > input[type='text'] {
+  flex-grow: 1;
+  padding-left: 0.25rem;
+  border: 1px solid #ddd;
+}
+
+.add-item > button {
+  font-size: 0.85rem;
+  padding: 0.25rem;
+  margin-left: 0.25rem;
+  border: 1px solid #ddd;
+  background: #eee;
+}
