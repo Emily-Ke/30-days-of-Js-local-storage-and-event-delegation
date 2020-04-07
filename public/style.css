@@ -22,14 +22,6 @@ body {
   align-items: center;
 }
 
-.logo {
-  width: 100px;
-  height: 100px;
-  background: palegreen;
-  border-radius: 50%;
-  opacity: 95%;
-}
-
 .tapas-list {
   background: white;
   width: 250px;

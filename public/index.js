@@ -52,7 +52,7 @@ const addItem = e => {
   const tapasUl = document.querySelector('.tapas-list ul');
   tapasUl.appendChild(li);
 
-  e.target.item.value = '';
+  e.target.reset();
 };
 
 const buildTapasListUl = tapasList => {
