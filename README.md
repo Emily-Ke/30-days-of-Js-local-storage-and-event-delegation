@@ -9,5 +9,5 @@ The custom CSS checkboxes come from https://medium.com/claritydesignsystem/pure-
 ### To view site:
 
 ```
-open public/index.html
+npm run dev
 ```
