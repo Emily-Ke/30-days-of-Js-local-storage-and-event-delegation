@@ -1,20 +1,25 @@
-let tapasList = [];
+interface TapasItem {
+  type: string;
+  checked: boolean;
+}
+
+let tapasList: TapasItem[] = [];
 const TAPAS_LIST_KEY = 'tapasList';
 
-const formatLabel = str =>
+const formatLabel = (str: string) =>
   str
     .split('-')
     .map(word => word.substring(0, 1).toUpperCase() + word.substring(1))
     .join(' ');
 
-const formatItem = str =>
+const formatItem = (str: string) =>
   str
     .toLowerCase()
     .trim()
     .replace(/\s+/, '-');
 
-const handleCheck = e => {
-  const { id, checked } = e.target;
+const handleCheck = (e: Event) => {
+  const { id, checked } = e.target as HTMLInputElement;
   const index = tapasList.findIndex(item => item.type === id);
 
   if (index > -1) {
@@ -23,7 +28,7 @@ const handleCheck = e => {
   }
 };
 
-const buildTapasLi = item => {
+const buildTapasLi = (item: TapasItem) => {
   const li = document.createElement('li');
 
   const checkbox = document.createElement('input');
@@ -40,10 +45,13 @@ const buildTapasLi = item => {
   return li;
 };
 
-const addItem = e => {
+const addItem = (e: Event) => {
   e.preventDefault();
 
-  const item = { type: formatItem(e.target.item.value), checked: false };
+  const form = e.target as HTMLFormElement;
+  const { value } = form.elements.namedItem('item') as HTMLInputElement;
+
+  const item: TapasItem = { type: formatItem(value), checked: false };
 
   tapasList.push(item);
   localStorage.setItem(TAPAS_LIST_KEY, JSON.stringify(tapasList));
@@ -52,10 +60,10 @@ const addItem = e => {
   const tapasUl = document.querySelector('.tapas-list ul');
   tapasUl.appendChild(li);
 
-  e.target.reset();
+  form.reset();
 };
 
-const buildTapasListUl = tapasList => {
+const buildTapasListUl = (tapasList: TapasItem[]) => {
   const liNodes = tapasList.map(item => buildTapasLi(item));
 
   const ul = document.createElement('ul');
@@ -72,7 +80,7 @@ const buildAddItemForm = () => {
   const input = document.createElement('input');
   input.type = 'text';
   input.name = 'item';
-  input.id = 'add-item-imput';
+  input.id = 'add-item-input';
   input.setAttribute('aria-label', 'enter item to add');
 
   const btn = document.createElement('button');
@@ -90,18 +98,20 @@ const init = () => {
   if (storedList) {
     tapasList = JSON.parse(storedList);
   } else {
-    tapasList = [...document.querySelectorAll('.tapas-list input')].map(
-      input => ({
-        type: input.id,
-        checked: input.checked
-      })
-    );
+    tapasList = [
+      ...document.querySelectorAll<HTMLInputElement>('.tapas-list input')
+    ].map(input => ({
+      type: input.id,
+      checked: input.checked
+    }));
     localStorage.setItem(TAPAS_LIST_KEY, JSON.stringify(tapasList));
   }
 
   const tapasListUl = buildTapasListUl(tapasList);
   const addItemForm = buildAddItemForm();
-  const currentTapasList = document.querySelector('.tapas-list ul');
+  const currentTapasList = document.querySelector<HTMLUListElement>(
+    '.tapas-list ul'
+  );
   currentTapasList.replaceWith(tapasListUl, addItemForm);
 };
 
