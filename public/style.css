@@ -16,6 +16,14 @@ body {
   align-items: center;
 }
 
+button {
+  padding: 0.25rem;
+  border: 1px solid #ddd;
+  background: #eee;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
 .container {
   display: flex;
   flex-direction: column;
@@ -115,8 +123,15 @@ body {
 
 .add-item > button {
   font-size: 0.85rem;
-  padding: 0.25rem;
   margin-left: 0.25rem;
-  border: 1px solid #ddd;
-  background: #eee;
+}
+
+.action-buttons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 2px;
+}
+
+.action-buttons button {
+  line-height: 1.15rem;
 }

@@ -93,13 +93,70 @@ const buildAddItemForm = () => {
   return form;
 };
 
+const paintTapasList = (tapasList: TapasItem[]) => {
+  const newTapasListUl = buildTapasListUl(tapasList);
+  const currentTapasList = document.querySelector<HTMLUListElement>(
+    '.tapas-list ul'
+  );
+  currentTapasList.replaceWith(newTapasListUl);
+};
+
+const buildActionButtons = () => {
+  const [checkAllButton, uncheckAllButton, clearAllButton] = [
+    'check all',
+    'uncheck all',
+    'clear all'
+  ].map(text => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.textContent = text;
+    return button;
+  });
+
+  checkAllButton.addEventListener('click', e => {
+    tapasList = tapasList.map(item => ({
+      ...item,
+      checked: true
+    }));
+    localStorage.setItem(TAPAS_LIST_KEY, JSON.stringify(tapasList));
+    paintTapasList(tapasList);
+  });
+
+  uncheckAllButton.addEventListener('click', e => {
+    tapasList = tapasList.map(item => ({
+      ...item,
+      checked: false
+    }));
+    localStorage.setItem(TAPAS_LIST_KEY, JSON.stringify(tapasList));
+    paintTapasList(tapasList);
+  });
+
+  clearAllButton.addEventListener('click', e => {
+    tapasList.length = 0;
+    localStorage.setItem(TAPAS_LIST_KEY, JSON.stringify(tapasList));
+    paintTapasList(tapasList);
+  });
+
+  const container = document.createElement('div');
+  container.classList.add('action-buttons');
+  container.append(checkAllButton, uncheckAllButton, clearAllButton);
+  return container;
+};
+
 const init = () => {
+  const currentTapasList = document.querySelector<HTMLUListElement>(
+    '.tapas-list ul'
+  );
+  const loading = document.createElement('p');
+  loading.textContent = 'Loading ...';
+  currentTapasList.replaceWith(loading);
+
   const storedList = localStorage.getItem(TAPAS_LIST_KEY);
   if (storedList) {
     tapasList = JSON.parse(storedList);
   } else {
     tapasList = [
-      ...document.querySelectorAll<HTMLInputElement>('.tapas-list input')
+      ...currentTapasList.querySelectorAll<HTMLInputElement>('input')
     ].map(input => ({
       type: input.id,
       checked: input.checked
@@ -109,10 +166,8 @@ const init = () => {
 
   const tapasListUl = buildTapasListUl(tapasList);
   const addItemForm = buildAddItemForm();
-  const currentTapasList = document.querySelector<HTMLUListElement>(
-    '.tapas-list ul'
-  );
-  currentTapasList.replaceWith(tapasListUl, addItemForm);
+  const actionButtons = buildActionButtons();
+  loading.replaceWith(tapasListUl, addItemForm, actionButtons);
 };
 
 window.addEventListener('load', init);
